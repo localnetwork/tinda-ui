@@ -15,7 +15,10 @@ export default function Login() {
     try {
       const response = await AuthApi.login({ email, password });
 
-      const accData = { ...response?.data.user, ...response?.data.profile };
+      const accData = {
+        user: response?.data.user,
+        profile: response?.data.profile,
+      };
       persistentStore.setState({
         account: accData,
       });
