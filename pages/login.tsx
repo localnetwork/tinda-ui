@@ -1,19 +1,25 @@
 import BaseApi from "@/lib/api/_base.api";
+import AuthApi from "@/lib/api/auth/request";
 import { useState } from "react";
-
+import { setCookie, destroyCookie } from "nookies";
+import persistentStore from "@/lib/store/persistentStore";
+import { useRouter } from "next/router";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = BaseApi.post(process.env.NEXT_PUBLIC_API_URL + "/v1/login", {
-        email,
-        password,
-      });
+      const response = await AuthApi.login({ email, password });
 
-      console.log("res", res);
+      const accData = { ...response?.data.user, ...response?.data.profile };
+      persistentStore.setState({
+        account: accData,
+      });
+      router.push("/");
     } catch (error) {
       console.log(error);
     }

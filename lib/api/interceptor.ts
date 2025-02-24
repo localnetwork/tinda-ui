@@ -10,6 +10,7 @@ interface Headers {
 const setupRequestInterceptor = (axios: AxiosInstance) => {
   return axios.interceptors.request.use((config) => {
     const cookies = parseCookies();
+
     const token = cookies.token;
 
     const headers: Headers = {
