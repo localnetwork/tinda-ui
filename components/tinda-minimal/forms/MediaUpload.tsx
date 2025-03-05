@@ -17,7 +17,7 @@ export default function MediaUpload({
 }: MediaUploadProps) {
   return (
     <div>
-      {image ? (
+      {image && image.length > 0 ? (
         <div className="inline-block relative">
           <img
             src={siteConfig.APIDOMAIN + image}

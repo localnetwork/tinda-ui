@@ -91,8 +91,6 @@ export default function StoreAdd() {
         [field]: mediaId,
       }));
 
-      console.log("mediaId", mediaId, "field", field);
-
       if (field == "store_logo") {
         console.log("imageUrl", imageUrl);
         setStoreLogoUrl(imageUrl);
@@ -128,6 +126,7 @@ export default function StoreAdd() {
           setStoreLogoUrl("");
           break;
         case "store_banner":
+          setIsBannerDark(false);
           setStoreBannerUrl("");
           break;
       }
@@ -138,21 +137,19 @@ export default function StoreAdd() {
       }
     }
   };
-
   const deleteImage = async (mediaId: string, field: string) => {
     try {
-      // const res = await BaseApi.delete(
-      //   `${process.env.NEXT_PUBLIC_API_URL}/media/${mediaId}`
-      // );
       setPayload((prev) => ({
         ...prev,
         [field]: "",
       }));
+
       switch (field) {
         case "store_logo":
           setStoreLogoUrl("");
           break;
         case "store_banner":
+          setIsBannerDark(false);
           setStoreBannerUrl("");
           break;
       }
@@ -161,6 +158,8 @@ export default function StoreAdd() {
       toast.error("Error deleting image");
     }
   };
+
+  console.log("isBannerDark", isBannerDark);
 
   const storeCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     toast.dismiss();
