@@ -1,5 +1,6 @@
 import { AxiosInstance, AxiosError, AxiosResponse } from "axios";
 import { parseCookies } from "nookies";
+const TOKEN = process.env.NEXT_PUBLIC_TOKEN || "app_token";
 const RATE_LIMIT_KEY = process.env.NEXT_PUBLIC_RATE_LIMIT_KEY || "";
 interface Headers {
   Authorization: string;
@@ -11,7 +12,11 @@ const setupRequestInterceptor = (axios: AxiosInstance) => {
   return axios.interceptors.request.use((config) => {
     const cookies = parseCookies();
 
-    const token = cookies.token;
+    console.log("cookies", cookies);
+
+    const token = cookies[TOKEN];
+
+    console.log("token", token);
 
     const headers: Headers = {
       Authorization: `Bearer ${token || ""}`,

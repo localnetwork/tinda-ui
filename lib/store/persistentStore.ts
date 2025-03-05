@@ -5,11 +5,13 @@ interface PersistentStore {
   locale: string;
   account: string;
   setLocale?: (locale: string) => void;
+  stores: Array<object>;
 }
 
 const initialState: Omit<PersistentStore, "setLocale"> = {
   locale: "",
   account: "",
+  stores: [],
 };
 
 const storeHandler = (set: any) => ({

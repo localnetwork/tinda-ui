@@ -27,7 +27,7 @@ export default function SellerCenter() {
               className="bg-secondary text-white px-[15px] py-[8px] rounded-[5px] inline-block"
               href="/store/add"
             >
-              Start Registration
+              Create your first store
             </Link>
           </div>
         </div>
