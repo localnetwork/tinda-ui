@@ -1,4 +1,5 @@
 import siteConfig from "@/site.config";
+import Image from "next/image";
 import React from "react";
 
 interface MediaUploadProps {
@@ -19,14 +20,18 @@ export default function MediaUpload({
     <div>
       {image && image.length > 0 ? (
         <div className="inline-block relative">
-          <img
+          <Image
             src={siteConfig.APIDOMAIN + image}
             alt="Preview"
             className="mt-2 w-32 h-32 object-contain bg-black rounded-[5px]"
+            width={100}
+            height={100}
           />
 
           <div
-            onClick={onDelete}
+            onClick={() => {
+              onDelete({} as React.ChangeEvent<HTMLInputElement>);
+            }}
             className="absolute right-[5px] z-[1] top-[15px] bg-white p-1 rounded-[5px] cursor-pointer text-red-500"
           >
             <svg

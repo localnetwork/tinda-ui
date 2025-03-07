@@ -1,17 +1,27 @@
 import { NextResponse, NextRequest } from "next/server";
 
-const TOKEN = process.env.NEXT_PUBLIC_TOKEN || "app_token";
-
+const TOKEN = process.env.AUTH_TOKEN || "app_token"; // Use a server-side env variable
 const PROTECTED_ROUTES = ["/seller-center", "/store"];
 const AUTH_ROUTE = "/login";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isAuthenticated = request.cookies.has(TOKEN);
+  const token = request.cookies.get(TOKEN)?.value; // Correct way to check cookies
+  const isAuthenticated = Boolean(token);
   const isAuthPage = pathname === AUTH_ROUTE;
   const isProtectedRoute = PROTECTED_ROUTES.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`)
   );
+
+  // console.log("token", token);
+
+  // console.log("Middleware Debug:", {
+  //   pathname,
+  //   token,
+  //   isAuthenticated,
+  //   isAuthPage,
+  //   isProtectedRoute,
+  // });
 
   // Redirect authenticated users away from login page
   if (isAuthenticated && isAuthPage) {
@@ -27,5 +37,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [AUTH_ROUTE, "/store/:slug", "/seller-center"],
+  matcher: ["/login", "/store/:path*", "/seller-center/:path*"], // Ensure all protected routes are covered
 };

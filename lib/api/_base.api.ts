@@ -7,7 +7,7 @@ interceptorSetup(axios);
 const basicAxios = axios.create();
 
 interface ApiResponse<T = any> {
-  data: T;
+  data?: T;
   mutate?: () => Promise<any>;
   isValidating?: boolean;
   error?: Error;

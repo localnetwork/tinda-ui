@@ -18,25 +18,26 @@ interface UploadResponse {
     };
   }>;
   results: Array<{
-    media: any;
+    media: object;
     formats: {
       large: string;
     };
   }>;
 }
 interface Account {
-  user: any;
-  profile: any;
+  user: object;
+  profile: object;
 }
 import MediaUpload from "@/components/tinda-minimal/forms/MediaUpload";
+import Link from "next/link";
 export default function StoreAdd() {
-  const account = persistentStore(
-    (state) => state.account
-  ) as unknown as Account;
+  // const account = persistentStore(
+  //   (state) => state.account
+  // ) as unknown as Account;
 
-  const { user, profile } = account;
+  // const { user, profile } = account;
   const router = useRouter();
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<object>({});
   const [payload, setPayload] = useState({
     store_name: "",
     store_email: "",
@@ -92,7 +93,6 @@ export default function StoreAdd() {
       }));
 
       if (field == "store_logo") {
-        console.log("imageUrl", imageUrl);
         setStoreLogoUrl(imageUrl);
       }
       if (field == "store_banner") {
@@ -159,8 +159,6 @@ export default function StoreAdd() {
     }
   };
 
-  console.log("isBannerDark", isBannerDark);
-
   const storeCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     toast.dismiss();
     e.preventDefault();
@@ -169,19 +167,20 @@ export default function StoreAdd() {
         process.env.NEXT_PUBLIC_API_URL + "/stores",
         payload
       );
-
       const currentStores = persistentStore.getState().stores || [];
+      router.push("/seller-center");
 
       persistentStore.setState({
         stores: [...currentStores, res.data?.data],
       });
       toast.success("Store created successfully");
-      router.push("/seller-center");
     } catch (error: any) {
       console.log("error", error);
       setErrors(error.data.errors);
       if (error.status === 422) {
         toast.error("There are errors in the form.");
+      } else {
+        toast.error("Unable to create store. Please try again later.");
       }
     }
   };
@@ -202,6 +201,11 @@ export default function StoreAdd() {
     <div className="min-h-[100vh] bg-[#f5f5f5] py-[30px]">
       <div className="container">
         <div className="bg-white rounded-[5px] p-[30px] shadow-md">
+          <div className="mb-[30px] text-[12px]">
+            <Link href="/seller-center" className="text-secondary underline">
+              Back to Seller Center
+            </Link>
+          </div>
           <div className="progress grid grid-cols-3 mb-[30px] pb-[30px] border-b-[1px] border-[#f5f5f5]">
             <div className="font-bold relative flex flex-col items-center justify-center">
               <span className="circle p-[10px] z-[1] rounded-full bg-white">
@@ -437,13 +441,18 @@ export default function StoreAdd() {
                       </div>
                       <div className="py-[20px]">
                         <div
-                          className="rounded-[5px] flex gap-x-[15px] bg-[#f5f5f5] p-[15px] bg-cover"
+                          className="rounded-[5px] relative flex gap-x-[15px] bg-[#f5f5f5] p-[15px] bg-cover"
                           style={{
                             backgroundImage: `url(${siteConfig.APIDOMAIN}${storeBannerUrl})`,
                           }}
                         >
                           <div
-                            className={`flex overflow-hidden items-center justify-center p-[10px] w-[100px] h-[100px] backdrop-blur-sm bg-opacity-50 rounded-full ${
+                            className={`absolute top-0 left-0 w-full h-full bg-opacity-30 ${
+                              isBannerDark ? "bg-[#212121]" : "bg-[#fff]"
+                            }`}
+                          />
+                          <div
+                            className={`flex relative overflow-hidden items-center justify-center p-[10px] w-[100px] h-[100px] backdrop-blur-sm bg-opacity-50 rounded-full ${
                               isBannerDark ? "bg-[#fff]" : "bg-[#212121]"
                             }`}
                           >
@@ -475,7 +484,7 @@ export default function StoreAdd() {
                             )}
                           </div>
                           <div
-                            className={`pt-[15px] w-[calc(100%-120px)] ${
+                            className={`pt-[15px] relative w-[calc(100%-120px)] ${
                               isBannerDark ? "text-white" : "text-black"
                             }`}
                           >

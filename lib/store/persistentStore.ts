@@ -14,7 +14,7 @@ const initialState: Omit<PersistentStore, "setLocale"> = {
   stores: [],
 };
 
-const storeHandler = (set: any) => ({
+const storeHandler = () => ({
   ...initialState,
 });
 

@@ -1,7 +1,5 @@
-import BaseApi from "@/lib/api/_base.api";
 import AuthApi from "@/lib/api/auth/request";
 import { useState } from "react";
-import { setCookie, destroyCookie } from "nookies";
 import persistentStore from "@/lib/store/persistentStore";
 import { useRouter } from "next/router";
 export default function Login() {

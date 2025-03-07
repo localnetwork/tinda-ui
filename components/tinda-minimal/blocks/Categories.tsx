@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Categories() {
   const test = [
     {
@@ -65,9 +67,11 @@ export default function Categories() {
                 className="border-l-[1px] cursor-pointer hover:bg-[#e8e8e8] border-b-[1px] py-[10px] border-[#e9e9e9] border-t-0"
               >
                 <div className="relative pb-[100%]">
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.name}
+                    width={100}
+                    height={100}
                     className="w-full h-full object-cover absolute top-0 left-0"
                   />
                 </div>

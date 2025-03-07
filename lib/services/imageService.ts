@@ -22,7 +22,7 @@ export default function detectImageLightOrDark(
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const pixels = imageData.data;
       let totalBrightness = 0;
-      let totalPixels = pixels.length / 4;
+      const totalPixels = pixels.length / 4;
 
       for (let i = 0; i < pixels.length; i += 4) {
         const r = pixels[i];
