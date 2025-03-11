@@ -9,8 +9,6 @@ export default function SellerCenterBreadcrumbs({
 }: SellerCenterBreadcrumbsProps) {
   const router = useRouter();
 
-  console.log("router", router?.asPath);
-  console.log("data", data);
   return (
     <div>
       <div>

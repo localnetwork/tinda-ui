@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from "next";
 import { setContext } from "@/lib/api/interceptor";
 import SellerLayout from "@/components/tinda-minimal/modules/seller-center/SellerLayout";
 import BaseApi from "@/lib/api/_base.api";
+import { notFound } from "next/navigation";
 export const getServerSideProps = async ({
   params,
   req,
@@ -30,9 +31,7 @@ export const getServerSideProps = async ({
   } catch (error) {
     console.log("error", error);
     return {
-      props: {
-        data: null,
-      },
+      notFound: true,
     };
   }
 };

@@ -58,8 +58,6 @@ export default function Page({ data }: PageProps) {
 
   const { id } = data;
 
-  console.log("idididid", id);
-
   const getUsers = async () => {
     try {
       const res = await BaseApi.get(
@@ -83,7 +81,7 @@ export default function Page({ data }: PageProps) {
         <TableCaption>A list of users in your store.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">User ID</TableHead>
+            <TableHead className="w-[100px]">Username</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Roles</TableHead>
@@ -93,7 +91,9 @@ export default function Page({ data }: PageProps) {
         <TableBody>
           {users.map((item, index) => (
             <TableRow key={index} className="!py-2">
-              <TableCell className="font-medium">{item.user.id}</TableCell>
+              <TableCell className="font-medium">
+                {item.user.username}
+              </TableCell>
               <TableCell>
                 {item.profile.firstName} {item.profile.middleName}{" "}
                 {item.profile.lastName}
