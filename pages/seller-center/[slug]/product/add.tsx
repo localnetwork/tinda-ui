@@ -30,9 +30,7 @@ export const getServerSideProps = async ({
   } catch (error) {
     console.log("error", error);
     return {
-      props: {
-        data: null,
-      },
+      notFound: true,
     };
   }
 };
@@ -72,7 +70,7 @@ export default function Page({ data }: PageProps) {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
-                className="w-[20px] h-[20px]"
+                className="min-w-[20px] h-[20px]"
               >
                 <path
                   fill="#e5e5e5"

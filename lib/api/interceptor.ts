@@ -32,11 +32,14 @@ const getToken = (): string | undefined => {
 const setupRequestInterceptor = (axios: AxiosInstance) => {
   return axios.interceptors.request.use((config) => {
     const token = getToken();
+
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
+
     config.headers["Strict-Transport-Security"] = "max-age=31536000";
     config.headers["X-Rate-Key"] = RATE_LIMIT_KEY;
+
     return config;
   });
 };

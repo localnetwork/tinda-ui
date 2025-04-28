@@ -20,7 +20,7 @@ export default function Login() {
       persistentStore.setState({
         account: accData,
       });
-      router.replace("/");
+      router.replace(`${router.query.destination || "/"}`);
     } catch (error) {
       console.log(error);
     }

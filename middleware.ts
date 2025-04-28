@@ -9,6 +9,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get(TOKEN)?.value; // Correct way to check cookies
   const isAuthenticated = Boolean(token);
   const isAuthPage = pathname === AUTH_ROUTE;
+  const destination = request.nextUrl.pathname;
   const isProtectedRoute = PROTECTED_ROUTES.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`)
   );
@@ -30,7 +31,9 @@ export function middleware(request: NextRequest) {
 
   // Redirect unauthenticated users to login page
   if (!isAuthenticated && isProtectedRoute) {
-    return NextResponse.redirect(new URL(AUTH_ROUTE, request.url));
+    return NextResponse.redirect(
+      new URL(AUTH_ROUTE + `?destination=${destination}`, request.url)
+    );
   }
 
   return NextResponse.next();

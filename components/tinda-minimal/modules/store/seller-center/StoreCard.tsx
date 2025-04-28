@@ -33,7 +33,7 @@ export default function StoreCard({
   }, []);
 
   return (
-    <div className="py-[20px]">
+    <div className="">
       <div
         className="rounded-[5px] relative shadow-md border flex gap-x-[15px] bg-[#f5f5f5] p-[15px] bg-cover"
         style={{

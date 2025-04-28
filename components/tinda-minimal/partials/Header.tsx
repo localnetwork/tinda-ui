@@ -1,7 +1,8 @@
 import persistentStore from "@/lib/store/persistentStore";
 import Image from "next/image";
 import Link from "next/link";
-
+import { useEffect, useState } from "react";
+import AuthApi from "@/lib/api/auth/request";
 interface Account {
   user: object;
   profile: any;
@@ -12,11 +13,30 @@ export default function Header() {
     (state) => state.account
   ) as unknown as Account;
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const { user, profile } = account;
   const profilePictureFormats =
     typeof profile?.profile_picture?.formats === "string"
       ? JSON.parse(profile.profile_picture.formats)
       : profile?.profile_picture?.formats;
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      const menu = document.querySelector('[class*="user-toggle"]');
+      if (menu && !menu.contains(target)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  const logout = async () => {
+    await AuthApi.logout();
+  };
 
   return (
     <header className="sticky top-0 z-[1000]">
@@ -86,39 +106,124 @@ export default function Header() {
               </svg>
             </div>
           </div>
-          {profile ? (
-            <div className="flex gap-x-[15px] items-center text-primary">
-              <Image
-                src={
-                  process.env.NEXT_PUBLIC_API_DOMAIN +
-                  profilePictureFormats?.small
-                }
-                width={150}
-                height={150}
-                className="w-[50px] cursor-pointer border-secondary border-[2px] p-[2px] h-[50px] rounded-full object-cover"
-                alt="Hello World"
-              />
-            </div>
-          ) : (
-            <div className="border-secondary border-[2px] cursor-pointer flex items-center justify-center p-[2px] rounded-full w-[50px] h-[50px] ]">
-              <div className="bg-[#f4f4f4] rounded-full flex items-center justify-center w-full h-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="#9c8888"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                  />
-                </svg>
+          <div className="relative user-toggle">
+            {profile ? (
+              <div
+                className="flex gap-x-[15px] items-center text-primary"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                <Image
+                  src={
+                    process.env.NEXT_PUBLIC_API_DOMAIN +
+                    profilePictureFormats?.small
+                  }
+                  width={150}
+                  height={150}
+                  className="w-[50px] cursor-pointer border-secondary border-[2px] p-[2px] h-[50px] rounded-full object-cover"
+                  alt="Hello World"
+                />
               </div>
+            ) : (
+              <div
+                className="border-secondary border-[2px] cursor-pointer flex items-center justify-center p-[2px] rounded-full w-[50px] h-[50px] ]"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                <div className="bg-[#f4f4f4] rounded-full flex items-center justify-center w-full h-full">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="#9c8888"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            )}
+
+            <div
+              className={`bg-white p-[15px] border left-1/2 min-w-[250px] pt-[10px] absolute top-[150%] translate-x-[-50%] transition-all duration-300 whitespace-normal z-[20] ${
+                isMenuOpen
+                  ? "visible opacity-100 translate-y-0"
+                  : "invisible opacity-0 translate-y-[10%]"
+              }`}
+            >
+              <div className="bg-[#fff] border-b-[#bfbfbf] border-l border-l-[#bfbfbf] border-r-[#bfbfbf] border-t border-t-[#bfbfbf] content-[''] h-[10px] left-1/2 absolute top-[-6px] translate-x-[-50%] rotate-[45deg] w-[10px]" />
+
+              {profile ? (
+                <div className="text-[#777777] text-[14px]">
+                  <div className="py-[8px] item flex items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="min-w-[25px] h-[25px] mr-[10px]"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                      />
+                    </svg>
+                    Manage my account
+                  </div>
+                  <div className="py-[8px] ">
+                    <Link
+                      className="item flex items-center"
+                      href="/seller-center"
+                      onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="min-w-[25px] h-[25px] mr-[10px]"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z"
+                        />
+                      </svg>
+                      Manage Stores
+                    </Link>
+                  </div>
+                  <div
+                    className="py-[8px] item flex items-center"
+                    onClick={() => logout()}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="min-w-[25px] h-[25px] mr-[10px]"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                      />
+                    </svg>
+                    Logout
+                  </div>
+                </div>
+              ) : (
+                <div></div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </header>

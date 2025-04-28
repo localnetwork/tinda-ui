@@ -48,7 +48,7 @@ export default function SellerCenter() {
                 </Link>
               </div>
 
-              <div className="grid grid-cols-2 py-[15px]">
+              <div className="grid grid-cols-2 py-[15px] gap-[15px]">
                 {stores?.map((item: any, index: Key | null | undefined) => {
                   let storeLogo;
                   let storeBanner;

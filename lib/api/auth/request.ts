@@ -66,6 +66,7 @@ export default class AuthApi {
   static async logout(): Promise<void> {
     destroyCookie(null, TOKEN);
     persistentStore.setState({ account: "" });
+    persistentStore.setState({ stores: [] });
     window.location.href = "/";
   }
 
