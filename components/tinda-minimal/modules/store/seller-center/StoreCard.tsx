@@ -28,9 +28,8 @@ export default function StoreCard({
         setIsBannerDark(isDark === "dark");
       }
     };
-
     sampleFnc();
-  }, []);
+  }, [store_banner]);
 
   return (
     <div className="">
@@ -78,13 +77,15 @@ export default function StoreCard({
           }`}
         >
           {store_logo ? (
-            <Image
-              src={store_logo}
-              width={100}
-              height={100}
-              alt="Hello"
-              className="w-full h-full object-cover rounded-full"
-            />
+            <>
+              <Image
+                src={store_logo}
+                width={100}
+                height={100}
+                alt="Hello"
+                className="w-full h-full object-cover rounded-full"
+              />
+            </>
           ) : (
             <div className="bg-[#333] text-[#969696] flex items-center justify-center rounded-full w-full h-full">
               <svg

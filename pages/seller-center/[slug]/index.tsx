@@ -18,19 +18,10 @@ export const getServerSideProps = async ({
   // Fetch data from external API
   const uuid = params?.slug || "";
 
-  console.log("uuid", uuid);
-
   try {
-    console.log(
-      "siteConfig.APIURL",
-      `${siteConfig.APIURL}/seller-center/${uuid}`
-    );
-
     const response = await BaseApi.get(
       `${siteConfig.APIURL}/seller-center/${uuid}`
     );
-
-    console.log("resss", response);
 
     return {
       props: {
@@ -38,7 +29,7 @@ export const getServerSideProps = async ({
       },
     };
   } catch (error) {
-    console.log("error", error);
+    console.log("eeeeeeeeeeeeee", error);
     return {
       notFound: true,
     };

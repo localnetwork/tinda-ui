@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AuthApi from "@/lib/api/auth/request";
+import BaseApi from "@/lib/api/_base.api";
 interface Account {
   user: object;
   profile: any;

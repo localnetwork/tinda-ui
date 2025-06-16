@@ -49,11 +49,11 @@ export default function SellerCenterMenu({
       children: [
         {
           title: "My Products",
-          path: "/product",
+          path: "/products",
         },
         {
           title: "Add New Product",
-          path: "/product/add",
+          path: "/products/add",
         },
       ],
     },
